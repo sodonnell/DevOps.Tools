@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Build the Docker Container
+
+export DOCKER_BUILDKIT=1
+
+docker --debug build -t DevOps.Tools/ubuntu:latest \
+    --secret id=ssh_prv_key,src="${HOME}/.ssh/id_rsa" \
+    --secret id=ssh_pub_key,src="${HOME}/.ssh/id_rsa.pub" .

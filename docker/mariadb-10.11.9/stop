@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+source ./config
+
+docker stop ${MARIADB_DNAME}
+docker rm ${MARIADB_DNAME} --force

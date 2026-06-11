@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# define the mariadb version
+MARIADB_VERSION=10.11.9
+
+# define the name of your local container
+MARIADB_DNAME=docker-mariadb
+
+# local mount path for mysql schema files
+MARIADB_LPATH=~/projects/${MARIADB_DNAME}/data-dir
+
+# docker container path of the above
+MARIADB_DPATH=/var/lib/mysql
+
+# local port
+MARIADB_LPORT=3306
+
+# docker container port
+MARIADB_DPORT=3306
+
+# your db password
+MARIADB_PASSWD=vcc-admin
+
+# local dumps pool/path
+DUMPS_LMOUNT=~/projects/${MARIADB_DNAME}/data-dumps
+
+# docker path to dumps pool
+DUMPS_DMOUNT=/data-dumps
+
+# ensure local pathing exist
+if [ ! -f ${MARIADB_LPATH} ]; then
+    mkdir -p ${MARIADB_LPATH}
+fi
+
+if [ ! -f ${DUMPS_LMOUNT} ]; then
+    mkdir -p ${DUMPS_LMOUNT}
+fi

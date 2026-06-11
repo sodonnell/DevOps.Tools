@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+######################################################
+#
+# Quickly launch a mariadb container to do local triage
+# on mysqldump scripts as a last resort, for example.
+#
+# Author Sean O'Donnell <sean@seanodonnell.com>
+#
+######################################################
+source ./config
+
+######################################################
+# pull the image, run the container, and connect to a
+# bash prompt in the container. Pretty basic stuff.
+######################################################
+
+docker pull mariadb:${MARIADB_VERSION}
+
+docker run -d --name ${MARIADB_DNAME} \
+    -p ${MARIADB_LPORT}:${MARIADB_DPORT} \
+    -v ${DOCKER_LMOUNT}:${DOCKER_DMOUNT} \
+    -v ${MARIADB_LPATH}:${MARIADB_DPATH} \
+    -e MARIADB_ROOT_PASSWORD="${MARIADB_PASSWD}" \
+    mariadb:${MARIADB_VERSION}
+
+echo -e "Once you reach the prompt that follows, Use the following command to connect:\n\n\tmysql -u root -p\n\n";
+
+DOCKER_ID=`docker ps | grep ${MARIADB_DNAME} | awk {'print $1'}`
+
+docker exec -it ${DOCKER_ID} bash

@@ -1,0 +1,54 @@
+name: 'Reset Environment Branch'
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_name:
+        description: 'Repository to Reset:'
+        required: true
+        type: choice
+        options:
+          - sodonnell/DevOps.Tools
+      branch_name:
+        description: 'Branch/Environment to Reset:'
+        required: true
+        type: choice
+        options:
+          - staging
+          - uat
+          - develop
+
+jobs:
+  reset_branch:
+
+    name: "Reset branch"
+    runs-on: ubuntu-latest
+    env:
+      MAIN_BRANCH: origin/HEAD
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.repo_name }}
+          fetch-depth: 0 # Fetch all branches
+
+      - name: Set Branch Name Variable
+        id: set_branch_name
+        run: |
+            echo "BRANCH_NAME=${{ inputs.branch_name }}" >> $GITHUB_ENV
+
+      - name: Checkout/Switch to selected branch
+        id: get_branch
+        run: |
+          git checkout ${{ env.BRANCH_NAME }}
+
+      - name: Reset branch from production/main branch
+        id: reset_branch
+        run: |
+          git reset --hard ${{ env.MAIN_BRANCH }}
+
+      - name: Push branch changes
+        id: push_branch
+        run: |
+          git push origin ${{ env.BRANCH_NAME }} --force

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+source config
+
+if [ ! -z ${DOCKER_ID} ]; then
+    docker run --rm -it --entrypoint bash "${DOCKER_ID}"
+else
+    echo -e "Docker Image ID not detected. Check docker image list:\n"
+    docker images
+fi

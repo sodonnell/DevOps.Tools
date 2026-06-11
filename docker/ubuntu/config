@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+DOCKER_ID=`docker images | grep "DevOps.Tools/ubuntu" | awk {'print $3'}`
